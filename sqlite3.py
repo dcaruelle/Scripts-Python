@@ -1,18 +1,33 @@
 import sqlite3
 
-conn = sqlite3.connect('ma_base.db')
+conn = sqlite3.connect('example.db')
 
-cursor = conn.cursor()
-cursor.execute("""
-CREATE TABLE IF NOT EXIST users(
-  id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-  name TEXT,
-  age INTEGER
-)
-""")
+c = conn.cursor()
+
+# delete table
+c.execute('DROP TABLE IF EXISTS users')
+
+# create table
+c.execute('''
+	CREATE TABLE IF NOT EXISTS users(
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT,
+		age INTEGER)
+''')
+
+# insert table
+rows = [('David', 45),('Christophe', 56)]
+c.executemany('INSERT INTO users(name, age) VALUES (?, ?)', rows)
+
+# select
+try:
+	c.execute('SELECT name, age FROM users')
+except:
+	print('SQL Error')
+else:
+	for enreg in c:
+		print(enreg)
+
 conn.commit()
 
-cursor.execute("""
-INSERT INTO users(name, age) VALUES(?, ?)""", ("David", 45))
-
-db.close
+conn.close()
