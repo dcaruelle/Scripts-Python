@@ -23,7 +23,7 @@ c.executemany('INSERT INTO users(name, age) VALUES (?, ?)', rows)
 try:
 	c.execute('SELECT name, age FROM users')
 except:
-	print('SQL Error')
+	print('SQLite Error')
 else:
 	for enreg in c:
 		print(enreg)
